@@ -7,6 +7,7 @@ import SkillsSection from '@/components/SkillsSection';
 import EducationSection from '@/components/EducationSection';
 import FooterSection from '@/components/FooterSection';
 import GlassNavigation from '@/components/GlassNavigation';
+import CursorTrail from '@/components/CursorTrail';
 
 const pageTransition: Variants = {
   initial: { opacity: 0 },
@@ -45,6 +46,9 @@ const Index = () => {
         animate="animate"
         exit="exit"
       >
+        {/* Cursor Trail Effect */}
+        <CursorTrail />
+        
         <HeroSection />
         
         <motion.div
