@@ -1,8 +1,9 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, Phone, Linkedin, MapPin, Github, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroImage from '@/assets/arnav-portrait.png';
+import heroImage from '@/assets/hero-portrait.png';
 import { useRef } from 'react';
+import MagneticButton from './MagneticButton';
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -89,10 +90,7 @@ const HeroSection = () => {
           <span className="w-2.5 h-2.5 rounded-full bg-green-status animate-pulse-glow" />
           <span className="text-foreground font-medium">Open to work</span>
         </motion.div>
-        <motion.div
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.95 }}
-        >
+        <MagneticButton strength={0.4}>
           <Button 
             variant="outline" 
             onClick={handleDownloadCV}
@@ -100,7 +98,7 @@ const HeroSection = () => {
           >
             Download CV
           </Button>
-        </motion.div>
+        </MagneticButton>
       </motion.header>
 
       {/* Content */}

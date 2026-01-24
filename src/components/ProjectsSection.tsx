@@ -2,7 +2,8 @@ import { motion, AnimatePresence, Variants, useScroll, useTransform } from 'fram
 import { useState, useRef } from 'react';
 import { ExternalLink, Github, X, ArrowUpRight } from 'lucide-react';
 import { AnimatedHeading } from './AnimatedText';
-import heroImage from '@/assets/arnav-portrait.png';
+import heroImage from '@/assets/hero-portrait.png';
+import MagneticButton from './MagneticButton';
 
 interface Project {
   id: number;
@@ -19,19 +20,20 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "Portfolio Website",
-    description: "A modern, interactive portfolio showcasing my work and skills",
-    longDescription: "This award-winning portfolio website features smooth animations, parallax effects, and a carefully crafted user experience. Built with React, TypeScript, and Framer Motion for buttery smooth interactions.",
+    title: "Personal Portfolio",
+    description: "Award-winning interactive portfolio with stunning animations",
+    longDescription: "This portfolio website features smooth parallax effects, cursor trails, magnetic buttons, and a carefully crafted user experience. Built with React, TypeScript, and Framer Motion for buttery smooth interactions.",
     tags: ["React", "TypeScript", "Framer Motion", "Tailwind CSS"],
     gradient: "from-amber-500/20 to-orange-600/20",
     github: "https://github.com/Arnavgarhwal",
     live: "#",
     features: [
+      "Cursor trail effects & magnetic buttons",
       "Smooth parallax scrolling effects",
       "Interactive glass morphism navigation",
       "Staggered text reveal animations",
       "Fully responsive design",
-      "Dark theme with warm accents"
+      "Dark theme with warm amber accents"
     ]
   },
   {
@@ -40,7 +42,7 @@ const projects: Project[] = [
     description: "Full-stack e-commerce solution with modern UI/UX",
     longDescription: "A comprehensive e-commerce platform featuring product management, user authentication, shopping cart, and payment integration. Built with a focus on performance and user experience.",
     tags: ["React", "Node.js", "MongoDB", "Stripe"],
-    gradient: "from-blue-500/20 to-cyan-600/20",
+    gradient: "from-orange-500/20 to-amber-600/20",
     github: "https://github.com/Arnavgarhwal",
     features: [
       "User authentication & authorization",
@@ -56,7 +58,7 @@ const projects: Project[] = [
     description: "Intelligent chatbot with natural language processing",
     longDescription: "An AI-powered chat application that uses machine learning to provide intelligent responses. Features real-time messaging, conversation history, and personalized interactions.",
     tags: ["Python", "TensorFlow", "React", "WebSocket"],
-    gradient: "from-purple-500/20 to-pink-600/20",
+    gradient: "from-amber-600/20 to-yellow-500/20",
     github: "https://github.com/Arnavgarhwal",
     features: [
       "Natural language understanding",
@@ -72,7 +74,7 @@ const projects: Project[] = [
     description: "Collaborative project management tool for teams",
     longDescription: "A feature-rich task management application designed for team collaboration. Includes kanban boards, sprint planning, time tracking, and real-time updates for seamless teamwork.",
     tags: ["React", "Firebase", "Material-UI", "Redux"],
-    gradient: "from-green-500/20 to-emerald-600/20",
+    gradient: "from-orange-600/20 to-red-500/20",
     github: "https://github.com/Arnavgarhwal",
     features: [
       "Kanban board interface",
@@ -80,6 +82,38 @@ const projects: Project[] = [
       "Team collaboration features",
       "Time tracking & reports",
       "Real-time notifications"
+    ]
+  },
+  {
+    id: 5,
+    title: "Weather Dashboard",
+    description: "Real-time weather tracking with beautiful visualizations",
+    longDescription: "A sleek weather application featuring real-time data, interactive maps, and 7-day forecasts. Built with modern APIs and stunning data visualizations.",
+    tags: ["React", "OpenWeather API", "Chart.js", "Geolocation"],
+    gradient: "from-amber-400/20 to-orange-500/20",
+    github: "https://github.com/Arnavgarhwal",
+    features: [
+      "Real-time weather updates",
+      "Interactive weather maps",
+      "7-day forecast predictions",
+      "Location-based detection",
+      "Beautiful data charts"
+    ]
+  },
+  {
+    id: 6,
+    title: "Social Media Dashboard",
+    description: "Analytics dashboard for social media management",
+    longDescription: "A comprehensive dashboard for tracking social media metrics, engagement rates, and audience growth across multiple platforms.",
+    tags: ["React", "D3.js", "REST APIs", "Tailwind"],
+    gradient: "from-yellow-500/20 to-amber-600/20",
+    github: "https://github.com/Arnavgarhwal",
+    features: [
+      "Multi-platform analytics",
+      "Engagement tracking",
+      "Audience insights",
+      "Scheduled posting",
+      "Performance reports"
     ]
   },
 ];

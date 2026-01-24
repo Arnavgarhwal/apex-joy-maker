@@ -75,11 +75,19 @@ const GlassNavigation = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-8 left-1/2 -translate-x-[53%] z-50"
+      className="fixed bottom-8 left-1/2 -translate-x-[55%] z-50"
     >
+      {/* Glow effect behind nav */}
+      <div className="absolute inset-0 -z-10 blur-2xl opacity-60">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 via-primary/40 to-amber-500/30 rounded-full scale-110" />
+      </div>
+      <div className="absolute inset-0 -z-10 blur-xl opacity-40">
+        <div className="absolute inset-0 bg-primary/20 rounded-full scale-105" />
+      </div>
+      
       <div 
         ref={scrollContainerRef}
-        className="glass-nav flex items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide"
+        className="glass-nav flex items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-lg shadow-primary/20"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {navItems.map((item, index) => (
@@ -98,8 +106,20 @@ const GlassNavigation = () => {
             whileTap={{ scale: 0.95 }}
           >
             <motion.div
-              animate={activeItem === item.id ? { rotate: [0, -10, 10, 0] } : {}}
-              transition={{ duration: 0.5 }}
+              animate={activeItem === item.id 
+                ? { 
+                    scale: [1, 1.3, 0.9, 1.1, 1],
+                    rotate: [0, -15, 15, -5, 0],
+                    y: [0, -4, 2, -1, 0]
+                  } 
+                : {}
+              }
+              transition={{ 
+                duration: 0.6,
+                type: "spring",
+                stiffness: 300,
+                damping: 10
+              }}
             >
               <item.icon className="w-4 h-4" />
             </motion.div>
