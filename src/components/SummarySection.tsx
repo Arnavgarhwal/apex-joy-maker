@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import heroImage from '@/assets/arnav-portrait.png';
+import { AnimatedHeading } from './AnimatedText';
 
 const SummarySection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -64,12 +65,11 @@ const SummarySection = () => {
           viewport={{ once: true }}
           variants={containerVariants}
         >
-          <motion.h2 
-            variants={itemVariants}
-            className="text-3xl md:text-4xl font-bold text-primary mb-12"
-          >
-            Summary
-          </motion.h2>
+          <AnimatedHeading 
+            text="Summary"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-12"
+            delay={0.1}
+          />
           <div className="max-w-4xl space-y-6 text-foreground/80 leading-relaxed text-lg">
             <motion.p 
               variants={itemVariants}

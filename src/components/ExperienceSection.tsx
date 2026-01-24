@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import heroImage from '@/assets/arnav-portrait.png';
 import { useRef } from 'react';
+import { AnimatedHeading } from './AnimatedText';
 
 interface Experience {
   title: string;
@@ -80,15 +81,11 @@ const ExperienceSection = () => {
       />
 
       <div className="container mx-auto px-8 md:px-16 relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-3xl md:text-4xl font-bold text-primary mb-16"
-        >
-          Work Experience
-        </motion.h2>
+        <AnimatedHeading 
+          text="Work Experience"
+          className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary mb-16"
+          delay={0.1}
+        />
 
         <div className="space-y-24">
           {experiences.map((exp, index) => (

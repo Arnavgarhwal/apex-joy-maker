@@ -12,7 +12,9 @@ const navItems: NavItem[] = [
   { id: 'home', label: 'Home', icon: User },
   { id: 'summary', label: 'Summary', icon: FileText },
   { id: 'experience', label: 'Experience', icon: Briefcase },
+  { id: 'projects', label: 'Projects', icon: Briefcase },
   { id: 'skills', label: 'Skills', icon: Zap },
+  { id: 'education', label: 'Education', icon: FileText },
   { id: 'links', label: 'Links', icon: Link2 },
 ];
 
@@ -22,12 +24,14 @@ const GlassNavigation = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'summary', 'experience', 'skills', 'footer'];
+      const sections = ['hero', 'summary', 'experience', 'projects', 'skills', 'education', 'footer'];
       const sectionToNav: Record<string, string> = {
         hero: 'home',
         summary: 'summary',
         experience: 'experience',
+        projects: 'projects',
         skills: 'skills',
+        education: 'education',
         footer: 'links',
       };
 
@@ -54,7 +58,9 @@ const GlassNavigation = () => {
       home: 'hero',
       summary: 'summary',
       experience: 'experience',
+      projects: 'projects',
       skills: 'skills',
+      education: 'education',
       links: 'footer',
     };
     
@@ -69,7 +75,7 @@ const GlassNavigation = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-8 left-1/2 -translate-x-[52%] z-50"
+      className="fixed bottom-8 left-1/2 -translate-x-[53%] z-50"
     >
       <div 
         ref={scrollContainerRef}
