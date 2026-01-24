@@ -39,8 +39,12 @@ const SkillsSection = () => {
   };
 
   return (
-    <section id="skills" className="py-20 md:py-32 bg-background relative">
-      <div className="container mx-auto px-8 md:px-16">
+    <section id="skills" className="py-20 md:py-32 bg-background relative overflow-hidden">
+      {/* Warm ambient glow */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-600/5 rounded-full blur-3xl pointer-events-none" />
+      
+      <div className="container mx-auto px-8 md:px-16 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -64,10 +68,15 @@ const SkillsSection = () => {
                 <motion.div
                   key={index}
                   variants={itemVariants}
-                  className="flex items-center gap-3"
+                  whileHover={{ x: 8, scale: 1.02 }}
+                  className="flex items-center gap-3 cursor-default group"
                 >
-                  <span className="w-2 h-2 rounded-full bg-primary shrink-0" />
-                  <span className="text-foreground text-lg">{skill}</span>
+                  <motion.span 
+                    className="w-2 h-2 rounded-full bg-primary shrink-0"
+                    whileHover={{ scale: 1.5 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  />
+                  <span className="text-foreground text-lg group-hover:text-primary transition-colors duration-300">{skill}</span>
                 </motion.div>
               ))}
             </div>
@@ -84,19 +93,28 @@ const SkillsSection = () => {
               {tools.map((tool, index) => (
                 <motion.div
                   key={index}
-                  whileHover={{ scale: 1.1, y: -5 }}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 * index }}
+                  whileHover={{ 
+                    scale: 1.15, 
+                    y: -8,
+                    transition: { type: "spring", stiffness: 400, damping: 10 }
+                  }}
                   whileTap={{ scale: 0.95 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 17 }}
                   className="flex flex-col items-center gap-3 cursor-pointer group"
                 >
-                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-card/50 flex items-center justify-center p-3 group-hover:bg-card transition-colors duration-300">
+                  <motion.div 
+                    className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-card/50 flex items-center justify-center p-3 group-hover:bg-primary/10 group-hover:shadow-lg group-hover:shadow-primary/20 transition-all duration-300 border border-transparent group-hover:border-primary/30"
+                  >
                     <img
                       src={tool.icon}
                       alt={tool.name}
                       className="w-full h-full object-contain"
                     />
-                  </div>
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors duration-300">
+                  </motion.div>
+                  <span className="text-sm text-muted-foreground group-hover:text-primary transition-colors duration-300">
                     {tool.name}
                   </span>
                 </motion.div>
@@ -118,8 +136,9 @@ const SkillsSection = () => {
             {languages.map((lang, index) => (
               <motion.span 
                 key={index} 
-                className="text-muted-foreground hover:text-primary transition-colors duration-300 cursor-default"
-                whileHover={{ scale: 1.05 }}
+                className="text-muted-foreground hover:text-primary transition-colors duration-300 cursor-default px-4 py-2 rounded-full border border-transparent hover:border-primary/30 hover:bg-primary/5"
+                whileHover={{ scale: 1.1, y: -2 }}
+                transition={{ type: "spring", stiffness: 400 }}
               >
                 {lang}
               </motion.span>
