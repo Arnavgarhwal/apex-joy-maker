@@ -318,7 +318,7 @@ const ProjectsSection = () => {
 
                 {/* Features */}
                 <div className="mb-8">
-                  <h4 className="text-lg font-semibold text-foreground mb-4">Key Features</h4>
+                  <h4 className="text-lg font-semibold text-foreground mb-4">Features</h4>
                   <ul className="space-y-3">
                     {selectedProject.features.map((feature, i) => (
                       <motion.li

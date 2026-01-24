@@ -8,6 +8,7 @@ import EducationSection from '@/components/EducationSection';
 import FooterSection from '@/components/FooterSection';
 import GlassNavigation from '@/components/GlassNavigation';
 import CursorTrail from '@/components/CursorTrail';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const pageTransition: Variants = {
   initial: { opacity: 0 },
@@ -107,6 +108,9 @@ const Index = () => {
         
         {/* Glass Navigation */}
         <GlassNavigation />
+        
+        {/* Scroll to Top Button */}
+        <ScrollToTop />
       </motion.main>
     </AnimatePresence>
   );

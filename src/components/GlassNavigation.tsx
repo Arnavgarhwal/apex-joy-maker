@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, FileText, Briefcase, Zap, Link2 } from 'lucide-react';
+import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 
 interface NavItem {
@@ -12,9 +12,9 @@ const navItems: NavItem[] = [
   { id: 'home', label: 'Home', icon: User },
   { id: 'summary', label: 'Summary', icon: FileText },
   { id: 'experience', label: 'Experience', icon: Briefcase },
-  { id: 'projects', label: 'Projects', icon: Briefcase },
+  { id: 'projects', label: 'Projects', icon: FolderKanban },
   { id: 'skills', label: 'Skills', icon: Zap },
-  { id: 'education', label: 'Education', icon: FileText },
+  { id: 'education', label: 'Education', icon: GraduationCap },
   { id: 'links', label: 'Links', icon: Link2 },
 ];
 
@@ -75,19 +75,22 @@ const GlassNavigation = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-8 left-1/2 -translate-x-[53%] z-50"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
     >
-      {/* Glow effect behind nav */}
-      <div className="absolute inset-0 -z-10 blur-2xl opacity-60">
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/30 via-primary/40 to-amber-500/30 rounded-full scale-110" />
+      {/* Enhanced glow effect behind nav */}
+      <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
+      </div>
+      <div className="absolute inset-0 -z-10 blur-2xl opacity-50">
+        <div className="absolute inset-0 bg-primary/30 rounded-full scale-115" />
       </div>
       <div className="absolute inset-0 -z-10 blur-xl opacity-40">
-        <div className="absolute inset-0 bg-primary/20 rounded-full scale-105" />
+        <div className="absolute inset-0 bg-amber-600/20 rounded-full scale-105" />
       </div>
       
       <div 
         ref={scrollContainerRef}
-        className="glass-nav flex flex-row flex-nowrap items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-lg shadow-primary/20"
+        className="glass-nav flex flex-row flex-nowrap items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-2xl shadow-primary/30"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {navItems.map((item, index) => (
@@ -97,7 +100,7 @@ const GlassNavigation = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 + index * 0.1 }}
-            className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 shrink-0 ${
+            className={`relative flex items-center gap-2 px-3 md:px-4 py-2.5 rounded-full transition-all duration-300 shrink-0 ${
               activeItem === item.id
                 ? 'bg-primary text-primary-foreground'
                 : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
@@ -123,7 +126,8 @@ const GlassNavigation = () => {
             >
               <item.icon className="w-4 h-4" />
             </motion.div>
-            <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
+            {/* Hide label on small screens, show on md and up */}
+            <span className="hidden md:inline text-sm font-medium whitespace-nowrap">{item.label}</span>
             
             {activeItem === item.id && (
               <motion.div
