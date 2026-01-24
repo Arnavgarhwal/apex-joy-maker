@@ -2,7 +2,9 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import HeroSection from '@/components/HeroSection';
 import SummarySection from '@/components/SummarySection';
 import ExperienceSection from '@/components/ExperienceSection';
+import ProjectsSection from '@/components/ProjectsSection';
 import SkillsSection from '@/components/SkillsSection';
+import EducationSection from '@/components/EducationSection';
 import FooterSection from '@/components/FooterSection';
 import GlassNavigation from '@/components/GlassNavigation';
 
@@ -62,6 +64,15 @@ const Index = () => {
         >
           <ExperienceSection />
         </motion.div>
+
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <ProjectsSection />
+        </motion.div>
         
         <motion.div
           variants={sectionVariants}
@@ -70,6 +81,15 @@ const Index = () => {
           viewport={{ once: true, margin: "-100px" }}
         >
           <SkillsSection />
+        </motion.div>
+
+        <motion.div
+          variants={sectionVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <EducationSection />
         </motion.div>
         
         <motion.div
