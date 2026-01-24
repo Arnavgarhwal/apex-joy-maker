@@ -1,20 +1,9 @@
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Mail, Phone, Linkedin, MapPin, Github, Instagram } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroImage from '@/assets/arnav-photo.png';
-import { useRef } from 'react';
+import heroImage from '@/assets/arnav-portrait.png';
 
 const HeroSection = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"]
-  });
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
-
   const handleDownloadCV = () => {
     const link = document.createElement('a');
     link.href = '/arnav-garhwal-cv.pdf';
@@ -25,36 +14,33 @@ const HeroSection = () => {
   };
 
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background Image with Cinematic Effect */}
-      <motion.div 
-        className="absolute inset-0 z-0 cinematic-photo"
-        style={{ scale }}
-      >
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden">
+      {/* Right side image - Full clear image */}
+      <div className="absolute right-0 top-0 bottom-0 w-1/2 hidden lg:block">
         <img
           src={heroImage}
           alt="Arnav Garhwal"
           className="w-full h-full object-cover object-center"
         />
-        {/* Cinematic color grading overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        
-        {/* Film grain effect */}
-        <div 
-          className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
+        {/* Gradient fade to left */}
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
+      </div>
+
+      {/* Mobile background image */}
+      <div className="absolute inset-0 lg:hidden">
+        <img
+          src={heroImage}
+          alt="Arnav Garhwal"
+          className="w-full h-full object-cover object-top opacity-30"
         />
-      </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+      </div>
 
       {/* Header */}
       <motion.header
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        style={{ opacity }}
         className="absolute top-0 left-0 right-0 z-20 flex justify-between items-center px-8 md:px-16 py-6"
       >
         <motion.div 
@@ -79,11 +65,8 @@ const HeroSection = () => {
         </motion.div>
       </motion.header>
 
-      {/* Content with parallax */}
-      <motion.div 
-        className="relative z-10 container mx-auto px-8 md:px-16 pt-32"
-        style={{ y, opacity }}
-      >
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-8 md:px-16 pt-32">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -116,14 +99,14 @@ const HeroSection = () => {
             <ContactItem icon={MapPin} text="Mumbai, India" delay={0.75} />
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10"
       >
         <motion.div
           animate={{ y: [0, 10, 0] }}
@@ -156,8 +139,9 @@ const ContactItem = ({ icon: Icon, text, href, delay = 0 }: ContactItemProps) =>
       <motion.div
         whileHover={{ scale: 1.2, rotate: 5 }}
         transition={{ type: "spring", stiffness: 400 }}
+        className="w-8 h-8 rounded-lg border border-primary/50 flex items-center justify-center"
       >
-        <Icon className="w-5 h-5 text-primary" />
+        <Icon className="w-4 h-4 text-primary" />
       </motion.div>
       <span className="group-hover:text-primary transition-colors duration-300">{text}</span>
     </motion.div>
