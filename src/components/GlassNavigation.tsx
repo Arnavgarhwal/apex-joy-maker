@@ -87,7 +87,7 @@ const GlassNavigation = () => {
       
       <div 
         ref={scrollContainerRef}
-        className="glass-nav flex items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-lg shadow-primary/20"
+        className="glass-nav flex flex-row flex-nowrap items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-lg shadow-primary/20"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {navItems.map((item, index) => (
