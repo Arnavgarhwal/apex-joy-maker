@@ -75,7 +75,7 @@ const GlassNavigation = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-8 left-1/2 -translate-x-[55%] z-50"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
     >
       {/* Glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-2xl opacity-60">
