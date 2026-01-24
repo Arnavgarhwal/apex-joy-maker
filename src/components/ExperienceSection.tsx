@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import ProjectCard from './ProjectCard';
+import heroImage from '@/assets/arnav-portrait.png';
 
 interface Experience {
   title: string;
@@ -45,14 +46,24 @@ const personalProjects = [
 
 const ExperienceSection = () => {
   return (
-    <section className="py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-8 md:px-16">
+    <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
+      {/* Blurred background image */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={heroImage}
+          alt=""
+          className="w-full h-full object-cover object-center opacity-10 blur-2xl scale-110"
+        />
+        <div className="absolute inset-0 bg-background/80" />
+      </div>
+
+      <div className="container mx-auto px-8 md:px-16 relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-2xl font-semibold text-foreground mb-16"
+          className="text-3xl md:text-4xl font-bold text-primary mb-16"
         >
           Work Experience
         </motion.h2>

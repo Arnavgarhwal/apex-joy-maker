@@ -143,6 +143,16 @@
   .card-3d:hover .card-3d-content {
     transform: translateZ(20px);
   }
+
+  /* Hide scrollbar for horizontal nav */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @layer utilities {
