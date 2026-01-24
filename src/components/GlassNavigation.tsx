@@ -69,32 +69,40 @@ const GlassNavigation = () => {
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
-      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-[95vw]"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50"
     >
       <div 
         ref={scrollContainerRef}
         className="glass-nav flex items-center gap-1 p-1.5 rounded-full overflow-x-auto scrollbar-hide"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
-        {navItems.map((item) => (
+        {navItems.map((item, index) => (
           <motion.button
             key={item.id}
             onClick={() => handleClick(item.id)}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 + index * 0.1 }}
             className={`relative flex items-center gap-2 px-4 py-2.5 rounded-full transition-all duration-300 shrink-0 ${
               activeItem === item.id
-                ? 'bg-foreground text-background'
-                : 'text-foreground/70 hover:text-foreground'
+                ? 'bg-primary text-primary-foreground'
+                : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
             }`}
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.08, y: -2 }}
             whileTap={{ scale: 0.95 }}
           >
-            <item.icon className="w-4 h-4" />
+            <motion.div
+              animate={activeItem === item.id ? { rotate: [0, -10, 10, 0] } : {}}
+              transition={{ duration: 0.5 }}
+            >
+              <item.icon className="w-4 h-4" />
+            </motion.div>
             <span className="text-sm font-medium whitespace-nowrap">{item.label}</span>
             
             {activeItem === item.id && (
               <motion.div
                 layoutId="activeTab"
-                className="absolute inset-0 bg-foreground rounded-full -z-10"
+                className="absolute inset-0 bg-primary rounded-full -z-10"
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               />
             )}

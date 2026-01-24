@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Mail, Phone, Github, Linkedin, Instagram } from 'lucide-react';
 import heroImage from '@/assets/arnav-portrait.png';
+import { useRef } from 'react';
 
 const socialLinks = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/arnavgarhwal/", label: "LinkedIn", color: "bg-[#0077B5]" },
@@ -9,17 +10,27 @@ const socialLinks = [
 ];
 
 const FooterSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+
   return (
-    <footer id="footer" className="py-20 md:py-32 relative overflow-hidden">
-      {/* Blurred background image */}
-      <div className="absolute inset-0 z-0">
+    <footer ref={sectionRef} id="footer" className="py-20 md:py-32 relative overflow-hidden">
+      {/* Blurred background image with warm tones and parallax */}
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
         <img
           src={heroImage}
           alt=""
           className="w-full h-full object-cover object-center opacity-20 blur-xl scale-110"
         />
+        {/* Warm sepia overlay */}
+        <div className="absolute inset-0 bg-amber-900/10 mix-blend-overlay" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/70" />
-      </div>
+      </motion.div>
 
       <div className="container mx-auto px-8 md:px-16 relative z-10">
         <motion.h2

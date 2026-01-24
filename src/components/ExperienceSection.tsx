@@ -1,6 +1,7 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import heroImage from '@/assets/arnav-portrait.png';
+import { useRef } from 'react';
 
 interface Experience {
   title: string;
@@ -45,17 +46,38 @@ const personalProjects = [
 ];
 
 const ExperienceSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const bgY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  const floatY = useTransform(scrollYProgress, [0, 1], [100, -100]);
+
   return (
-    <section id="experience" className="py-20 md:py-32 relative overflow-hidden">
-      {/* Blurred background image */}
-      <div className="absolute inset-0 z-0">
+    <section ref={sectionRef} id="experience" className="py-20 md:py-32 relative overflow-hidden">
+      {/* Blurred background image with warm tones and parallax */}
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
         <img
           src={heroImage}
           alt=""
           className="w-full h-full object-cover object-center opacity-10 blur-2xl scale-110"
         />
+        {/* Warm sepia overlay */}
+        <div className="absolute inset-0 bg-amber-900/10 mix-blend-overlay" />
         <div className="absolute inset-0 bg-background/80" />
-      </div>
+      </motion.div>
+
+      {/* Floating warm glow elements */}
+      <motion.div 
+        style={{ y: floatY }}
+        className="absolute top-40 left-10 w-72 h-72 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"
+      />
+      <motion.div 
+        style={{ y: useTransform(scrollYProgress, [0, 1], [50, -150]) }}
+        className="absolute bottom-20 right-20 w-96 h-96 bg-amber-600/5 rounded-full blur-3xl pointer-events-none"
+      />
 
       <div className="container mx-auto px-8 md:px-16 relative z-10">
         <motion.h2

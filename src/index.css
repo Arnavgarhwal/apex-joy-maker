@@ -77,7 +77,9 @@
 
 @layer components {
   .text-gradient {
-    @apply bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-amber-400 via-amber-300 to-amber-200 bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: shimmer 3s linear infinite;
   }
   
   .glow-amber {
