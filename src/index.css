@@ -1,0 +1,220 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+@layer base {
+  :root {
+    --background: 0 0% 4%;
+    --foreground: 45 10% 95%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 45 10% 95%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 45 10% 95%;
+
+    --primary: 38 92% 50%;
+    --primary-foreground: 0 0% 4%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 45 10% 95%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 38 92% 50%;
+    --accent-foreground: 0 0% 4%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 18%;
+    --ring: 38 92% 50%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 6%;
+    --sidebar-foreground: 45 10% 95%;
+    --sidebar-primary: 38 92% 50%;
+    --sidebar-primary-foreground: 0 0% 4%;
+    --sidebar-accent: 0 0% 12%;
+    --sidebar-accent-foreground: 45 10% 95%;
+    --sidebar-border: 0 0% 18%;
+    --sidebar-ring: 38 92% 50%;
+    
+    /* Custom tokens */
+    --amber: 38 92% 50%;
+    --amber-glow: 38 100% 60%;
+    --green-status: 142 76% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-amber-400 to-amber-200 bg-clip-text text-transparent;
+  }
+  
+  .glow-amber {
+    box-shadow: 0 0 40px hsl(38 92% 50% / 0.3);
+  }
+  
+  .section-divider {
+    @apply border-t border-border/50;
+  }
+
+  /* Glass morphism navigation */
+  .glass-nav {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  /* Cinematic photo effect */
+  .cinematic-photo {
+    position: relative;
+  }
+
+  .cinematic-photo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.4) 100%),
+      linear-gradient(180deg, transparent 60%, rgba(0, 0, 0, 0.3) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .cinematic-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      45deg,
+      hsl(38 92% 50% / 0.05) 0%,
+      transparent 50%,
+      hsl(280 60% 40% / 0.05) 100%
+    );
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* 3D card effect */
+  .card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+  }
+
+  .card-3d-content {
+    transition: transform 0.3s ease;
+  }
+
+  .card-3d:hover .card-3d-content {
+    transform: translateZ(20px);
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s linear infinite;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(142 76% 45% / 0.4);
+    }
+    50% {
+      box-shadow: 0 0 10px 3px hsl(142 76% 45% / 0.6);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  /* Parallax layers */
+  .parallax-slow {
+    will-change: transform;
+  }
+
+  .parallax-fast {
+    will-change: transform;
+  }
+}
