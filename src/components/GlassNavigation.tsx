@@ -99,7 +99,7 @@ const GlassNavigation = () => {
     delay: 1,
     type: "spring",
     stiffness: 100
-  }} className="fixed bottom-8 left-1/2 -translate-x-[60%] z-50">
+  }} className="fixed bottom-8 left-1/2 -translate-x-[65%] z-50">
       {/* Enhanced glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
