@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Mail, Phone, Github, Linkedin, Instagram } from 'lucide-react';
+import { Mail, Phone, Github, Linkedin, Instagram, Twitter } from 'lucide-react';
 import heroImage from '@/assets/arnav-portrait.png';
 import { useRef } from 'react';
 
@@ -7,6 +7,7 @@ const socialLinks = [
   { icon: Linkedin, href: "https://www.linkedin.com/in/arnavgarhwal/", label: "LinkedIn", color: "bg-[#0077B5]" },
   { icon: Github, href: "https://github.com/Arnavgarhwal", label: "GitHub", color: "bg-[#333]" },
   { icon: Instagram, href: "https://www.instagram.com/arnavgarhwal/", label: "Instagram", color: "bg-gradient-to-br from-[#833AB4] via-[#FD1D1D] to-[#F77737]" },
+  { icon: Twitter, href: "https://twitter.com/arnavgarhwal", label: "Twitter", color: "bg-[#1DA1F2]" },
 ];
 
 const FooterSection = () => {
