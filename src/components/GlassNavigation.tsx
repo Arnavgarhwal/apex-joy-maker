@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap } from 'lucide-react';
+import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 interface NavItem {
   id: string;
@@ -31,6 +31,10 @@ const navItems: NavItem[] = [{
   label: 'Education',
   icon: GraduationCap
 }, {
+  id: 'contact',
+  label: 'Contact',
+  icon: Mail
+}, {
   id: 'links',
   label: 'Links',
   icon: Link2
@@ -40,7 +44,7 @@ const GlassNavigation = () => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'summary', 'experience', 'projects', 'skills', 'education', 'footer'];
+      const sections = ['hero', 'summary', 'experience', 'projects', 'skills', 'education', 'contact', 'footer'];
       const sectionToNav: Record<string, string> = {
         hero: 'home',
         summary: 'summary',
@@ -48,6 +52,7 @@ const GlassNavigation = () => {
         projects: 'projects',
         skills: 'skills',
         education: 'education',
+        contact: 'contact',
         footer: 'links'
       };
       for (const sectionId of sections) {
@@ -73,6 +78,7 @@ const GlassNavigation = () => {
       projects: 'projects',
       skills: 'skills',
       education: 'education',
+      contact: 'contact',
       links: 'footer'
     };
     const element = document.getElementById(sectionMap[id]);
@@ -93,7 +99,7 @@ const GlassNavigation = () => {
     delay: 1,
     type: "spring",
     stiffness: 100
-  }} className="fixed bottom-8 left-1/2 -translate-x-[47%] z-50">
+  }} className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
       {/* Enhanced glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
