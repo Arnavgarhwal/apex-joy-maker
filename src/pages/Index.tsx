@@ -1,4 +1,5 @@
 import { motion, AnimatePresence, Variants } from 'framer-motion';
+import { useState } from 'react';
 import HeroSection from '@/components/HeroSection';
 import SummarySection from '@/components/SummarySection';
 import ExperienceSection from '@/components/ExperienceSection';
@@ -6,9 +7,11 @@ import ProjectsSection from '@/components/ProjectsSection';
 import SkillsSection from '@/components/SkillsSection';
 import EducationSection from '@/components/EducationSection';
 import FooterSection from '@/components/FooterSection';
+import ContactSection from '@/components/ContactSection';
 import GlassNavigation from '@/components/GlassNavigation';
 import CursorTrail from '@/components/CursorTrail';
 import ScrollToTop from '@/components/ScrollToTop';
+import LoadingScreen from '@/components/LoadingScreen';
 
 const pageTransition: Variants = {
   initial: { opacity: 0 },
@@ -38,81 +41,98 @@ const sectionVariants: Variants = {
 };
 
 const Index = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
   return (
-    <AnimatePresence mode="wait">
-      <motion.main 
-        className="min-h-screen bg-background overflow-x-hidden"
-        variants={pageTransition}
-        initial="initial"
-        animate="animate"
-        exit="exit"
-      >
-        {/* Cursor Trail Effect */}
-        <CursorTrail />
-        
-        <HeroSection />
-        
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SummarySection />
-        </motion.div>
-        
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <ExperienceSection />
-        </motion.div>
+    <>
+      <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />
+      
+      <AnimatePresence mode="wait">
+        {!isLoading && (
+          <motion.main 
+            className="min-h-screen bg-background overflow-x-hidden"
+            variants={pageTransition}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+          >
+            {/* Cursor Trail Effect */}
+            <CursorTrail />
+            
+            <HeroSection />
+            
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <SummarySection />
+            </motion.div>
+            
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <ExperienceSection />
+            </motion.div>
 
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <ProjectsSection />
-        </motion.div>
-        
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <SkillsSection />
-        </motion.div>
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <ProjectsSection />
+            </motion.div>
+            
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <SkillsSection />
+            </motion.div>
 
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <EducationSection />
-        </motion.div>
-        
-        <motion.div
-          variants={sectionVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <FooterSection />
-        </motion.div>
-        
-        {/* Glass Navigation */}
-        <GlassNavigation />
-        
-        {/* Scroll to Top Button */}
-        <ScrollToTop />
-      </motion.main>
-    </AnimatePresence>
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <EducationSection />
+            </motion.div>
+
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <ContactSection />
+            </motion.div>
+            
+            <motion.div
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+            >
+              <FooterSection />
+            </motion.div>
+            
+            {/* Glass Navigation */}
+            <GlassNavigation />
+            
+            {/* Scroll to Top Button */}
+            <ScrollToTop />
+          </motion.main>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
