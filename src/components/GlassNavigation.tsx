@@ -99,7 +99,7 @@ const GlassNavigation = () => {
     delay: 1,
     type: "spring",
     stiffness: 100
-  }} className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)]">
+  }} className="fixed bottom-8 left-1/2 -translate-x-[85%] z-50 max-w-[calc(100vw-2rem)]">
       {/* Enhanced glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
@@ -111,45 +111,59 @@ const GlassNavigation = () => {
         <div className="absolute inset-0 bg-amber-600/20 rounded-full scale-105" />
       </div>
       
-      <div ref={scrollContainerRef} className="glass-nav flex-row flex-nowrap p-1.5 rounded-full overflow-x-auto scrollbar-hide shadow-2xl shadow-primary/30 opacity-80 gap-[4px] px-[8px] mx-0 flex items-center justify-start" style={{
-      scrollbarWidth: 'none',
-      msOverflowStyle: 'none'
-    }}>
-        {navItems.map((item, index) => <motion.button key={item.id} onClick={() => handleClick(item.id)} initial={{
-        opacity: 0,
-        y: 20
-      }} animate={{
-        opacity: 1,
-        y: 0
-      }} transition={{
-        delay: 1.2 + index * 0.1
-      }} className={`relative flex items-center gap-2 px-3 md:px-4 py-2.5 rounded-full transition-all duration-300 shrink-0 ${activeItem === item.id ? 'bg-primary text-primary-foreground' : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'}`} whileHover={{
-        scale: 1.08,
-        y: -2
-      }} whileTap={{
-        scale: 0.95
-      }}>
-            <motion.div animate={activeItem === item.id ? {
-          scale: [1, 1.3, 0.9, 1.1, 1],
-          rotate: [0, -15, 15, -5, 0],
-          y: [0, -4, 2, -1, 0]
-        } : {}} transition={{
-          duration: 0.6,
-          type: "spring",
-          stiffness: 300,
-          damping: 10
-        }}>
-              <item.icon className="w-4 h-4" />
+      <div 
+        ref={scrollContainerRef} 
+        className="glass-nav flex-row flex-nowrap p-1 md:p-1.5 rounded-full overflow-x-auto shadow-2xl shadow-primary/30 opacity-80 gap-[2px] md:gap-[4px] px-[4px] md:px-[8px] mx-0 flex items-center justify-start scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent"
+        style={{
+          scrollbarWidth: 'thin',
+        }}
+      >
+        {navItems.map((item, index) => (
+          <motion.button 
+            key={item.id} 
+            onClick={() => handleClick(item.id)} 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2 + index * 0.1 }}
+            className={`relative flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 ${
+              activeItem === item.id 
+                ? 'bg-primary text-primary-foreground' 
+                : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
+            }`}
+            whileHover={{ scale: 1.08, y: -2 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <motion.div 
+              animate={activeItem === item.id ? {
+                scale: [1, 1.3, 0.9, 1.1, 1],
+                rotate: [0, -15, 15, -5, 0],
+                y: [0, -4, 2, -1, 0]
+              } : {}} 
+              transition={{
+                duration: 0.6,
+                type: "spring",
+                stiffness: 300,
+                damping: 10
+              }}
+            >
+              <item.icon className="w-3.5 h-3.5 md:w-4 md:h-4" />
             </motion.div>
             {/* Hide label on small screens, show on md and up */}
             <span className="hidden md:inline text-sm font-medium whitespace-nowrap">{item.label}</span>
             
-            {activeItem === item.id && <motion.div layoutId="activeTab" className="absolute inset-0 bg-primary rounded-full -z-10" transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 30
-        }} />}
-          </motion.button>)}
+            {activeItem === item.id && (
+              <motion.div 
+                layoutId="activeTab" 
+                className="absolute inset-0 bg-primary rounded-full -z-10" 
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 30
+                }} 
+              />
+            )}
+          </motion.button>
+        ))}
       </div>
     </motion.nav>;
 };
