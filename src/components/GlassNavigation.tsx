@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
 import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail } from 'lucide-react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+
 interface NavItem {
   id: string;
   label: string;
   icon: React.ElementType;
 }
+
 const navItems: NavItem[] = [{
   id: 'home',
   label: 'Home',
@@ -39,9 +41,46 @@ const navItems: NavItem[] = [{
   label: 'Links',
   icon: Link2
 }];
+
+// Create a reusable audio context for click sounds
+const createClickSound = () => {
+  try {
+    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.1);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.1);
+  } catch (e) {
+    // Audio not supported
+  }
+};
+
+// Haptic feedback for mobile devices
+const triggerHaptic = () => {
+  if ('vibrate' in navigator) {
+    navigator.vibrate(10); // Short 10ms vibration
+  }
+};
+
 const GlassNavigation = () => {
   const [activeItem, setActiveItem] = useState('home');
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleFeedback = useCallback(() => {
+    triggerHaptic();
+    createClickSound();
+  }, []);
+
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['hero', 'summary', 'experience', 'projects', 'skills', 'education', 'contact', 'footer'];
@@ -69,7 +108,9 @@ const GlassNavigation = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   const handleClick = (id: string) => {
+    handleFeedback();
     setActiveItem(id);
     const sectionMap: Record<string, string> = {
       home: 'hero',
