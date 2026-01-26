@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail } from 'lucide-react';
+import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail, Volume2, VolumeX } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface NavItem {
@@ -74,12 +74,26 @@ const triggerHaptic = () => {
 
 const GlassNavigation = () => {
   const [activeItem, setActiveItem] = useState('home');
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    const saved = localStorage.getItem('navbar-sound-enabled');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleFeedback = useCallback(() => {
-    triggerHaptic();
-    createClickSound();
+  const toggleSound = useCallback(() => {
+    setSoundEnabled((prev: boolean) => {
+      const newValue = !prev;
+      localStorage.setItem('navbar-sound-enabled', JSON.stringify(newValue));
+      return newValue;
+    });
   }, []);
+
+  const handleFeedback = useCallback(() => {
+    if (soundEnabled) {
+      triggerHaptic();
+      createClickSound();
+    }
+  }, [soundEnabled]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -129,6 +143,7 @@ const GlassNavigation = () => {
       });
     }
   };
+
   return <motion.nav initial={{
     y: 100,
     opacity: 0
@@ -140,7 +155,7 @@ const GlassNavigation = () => {
     delay: 1,
     type: "spring",
     stiffness: 100
-  }} className="fixed bottom-8 left-1/2 -translate-x-[85%] z-50 max-w-[calc(100vw-2rem)]">
+  }} className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)]">
       {/* Enhanced glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
@@ -205,6 +220,24 @@ const GlassNavigation = () => {
             )}
           </motion.button>
         ))}
+        
+        {/* Sound Toggle Button */}
+        <motion.button
+          onClick={toggleSound}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2 + navItems.length * 0.1 }}
+          className="relative flex items-center justify-center px-2 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 text-foreground/50 hover:text-foreground hover:bg-foreground/5 ml-1 border-l border-foreground/10 pl-3"
+          whileHover={{ scale: 1.08, y: -2 }}
+          whileTap={{ scale: 0.95 }}
+          title={soundEnabled ? "Mute sounds" : "Enable sounds"}
+        >
+          {soundEnabled ? (
+            <Volume2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          ) : (
+            <VolumeX className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          )}
+        </motion.button>
       </div>
     </motion.nav>;
 };
