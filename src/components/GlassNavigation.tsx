@@ -74,11 +74,13 @@ const triggerHaptic = () => {
 
 const GlassNavigation = () => {
   const [activeItem, setActiveItem] = useState('home');
+  const [focusedIndex, setFocusedIndex] = useState(-1);
   const [soundEnabled, setSoundEnabled] = useState(() => {
     const saved = localStorage.getItem('navbar-sound-enabled');
     return saved !== null ? JSON.parse(saved) : true;
   });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const toggleSound = useCallback(() => {
     setSoundEnabled((prev: boolean) => {
@@ -94,6 +96,42 @@ const GlassNavigation = () => {
       createClickSound();
     }
   }, [soundEnabled]);
+
+  // Keyboard navigation
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    const totalItems = navItems.length + 1; // +1 for sound toggle
+    
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        e.preventDefault();
+        setFocusedIndex(prev => {
+          const next = prev < totalItems - 1 ? prev + 1 : 0;
+          buttonRefs.current[next]?.focus();
+          return next;
+        });
+        break;
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        e.preventDefault();
+        setFocusedIndex(prev => {
+          const next = prev > 0 ? prev - 1 : totalItems - 1;
+          buttonRefs.current[next]?.focus();
+          return next;
+        });
+        break;
+      case 'Home':
+        e.preventDefault();
+        setFocusedIndex(0);
+        buttonRefs.current[0]?.focus();
+        break;
+      case 'End':
+        e.preventDefault();
+        setFocusedIndex(totalItems - 1);
+        buttonRefs.current[totalItems - 1]?.focus();
+        break;
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -155,7 +193,7 @@ const GlassNavigation = () => {
     delay: 1,
     type: "spring",
     stiffness: 100
-  }} className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-[calc(100vw-2rem)]">
+  }} className="fixed bottom-8 left-8 z-50 max-w-[calc(100vw-4rem)]">
       {/* Enhanced glow effect behind nav */}
       <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
         <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
@@ -169,6 +207,9 @@ const GlassNavigation = () => {
       
       <div 
         ref={scrollContainerRef} 
+        role="navigation"
+        aria-label="Main navigation"
+        onKeyDown={handleKeyDown}
         className="glass-nav flex-row flex-nowrap p-1 md:p-1.5 rounded-full overflow-x-auto shadow-2xl shadow-primary/30 opacity-80 gap-[2px] md:gap-[4px] px-[4px] md:px-[8px] mx-0 flex items-center justify-start scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent"
         style={{
           scrollbarWidth: 'thin',
@@ -176,12 +217,15 @@ const GlassNavigation = () => {
       >
         {navItems.map((item, index) => (
           <motion.button 
-            key={item.id} 
-            onClick={() => handleClick(item.id)} 
+            key={item.id}
+            ref={(el) => { buttonRefs.current[index] = el; }}
+            onClick={() => handleClick(item.id)}
+            onFocus={() => setFocusedIndex(index)}
+            tabIndex={focusedIndex === index || (focusedIndex === -1 && index === 0) ? 0 : -1}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2 + index * 0.1 }}
-            className={`relative flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 ${
+            className={`relative flex items-center gap-1 md:gap-2 px-2 md:px-4 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background ${
               activeItem === item.id 
                 ? 'bg-primary text-primary-foreground' 
                 : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5'
@@ -223,14 +267,18 @@ const GlassNavigation = () => {
         
         {/* Sound Toggle Button */}
         <motion.button
+          ref={(el) => { buttonRefs.current[navItems.length] = el; }}
           onClick={toggleSound}
+          onFocus={() => setFocusedIndex(navItems.length)}
+          tabIndex={focusedIndex === navItems.length ? 0 : -1}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.2 + navItems.length * 0.1 }}
-          className="relative flex items-center justify-center px-2 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 text-foreground/50 hover:text-foreground hover:bg-foreground/5 ml-1 border-l border-foreground/10 pl-3"
+          className="relative flex items-center justify-center px-2 py-1.5 md:py-2.5 rounded-full transition-all duration-300 shrink-0 text-foreground/50 hover:text-foreground hover:bg-foreground/5 ml-1 border-l border-foreground/10 pl-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
           whileHover={{ scale: 1.08, y: -2 }}
           whileTap={{ scale: 0.95 }}
           title={soundEnabled ? "Mute sounds" : "Enable sounds"}
+          aria-label={soundEnabled ? "Mute sounds" : "Enable sounds"}
         >
           {soundEnabled ? (
             <Volume2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
