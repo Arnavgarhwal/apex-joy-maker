@@ -12,6 +12,7 @@ import GlassNavigation from '@/components/GlassNavigation';
 import CursorTrail from '@/components/CursorTrail';
 import ScrollToTop from '@/components/ScrollToTop';
 import LoadingScreen from '@/components/LoadingScreen';
+import ScrollProgressBar from '@/components/ScrollProgressBar';
 
 const pageTransition: Variants = {
   initial: { opacity: 0 },
@@ -56,6 +57,9 @@ const Index = () => {
             animate="animate"
             exit="exit"
           >
+            {/* Scroll Progress Bar */}
+            <ScrollProgressBar />
+            
             {/* Cursor Trail Effect */}
             <CursorTrail />
             
