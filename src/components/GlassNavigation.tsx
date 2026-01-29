@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail, Volume2, VolumeX } from 'lucide-react';
+import { motion, AnimatePresence, useDragControls, PanInfo } from 'framer-motion';
+import { User, FileText, Briefcase, Zap, Link2, FolderKanban, GraduationCap, Mail, Volume2, VolumeX, GripVertical } from 'lucide-react';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
@@ -82,8 +82,15 @@ const GlassNavigation = () => {
   });
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState(() => {
+    const saved = localStorage.getItem('navbar-position');
+    return saved ? JSON.parse(saved) : { x: 32, y: window.innerHeight - 100 };
+  });
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const dragControls = useDragControls();
+  const constraintsRef = useRef<HTMLDivElement>(null);
 
   const toggleSound = useCallback(() => {
     setSoundEnabled((prev: boolean) => {
@@ -136,6 +143,21 @@ const GlassNavigation = () => {
     }
   }, []);
 
+  const handleDragEnd = useCallback((_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    setIsDragging(false);
+    const newPosition = { 
+      x: position.x + info.offset.x, 
+      y: position.y + info.offset.y 
+    };
+    // Constrain to viewport
+    const navWidth = scrollContainerRef.current?.offsetWidth || 400;
+    const navHeight = scrollContainerRef.current?.offsetHeight || 60;
+    newPosition.x = Math.max(8, Math.min(window.innerWidth - navWidth - 8, newPosition.x));
+    newPosition.y = Math.max(8, Math.min(window.innerHeight - navHeight - 8, newPosition.y));
+    setPosition(newPosition);
+    localStorage.setItem('navbar-position', JSON.stringify(newPosition));
+  }, [position]);
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -175,6 +197,21 @@ const GlassNavigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  // Handle window resize to keep navbar in bounds
+  useEffect(() => {
+    const handleResize = () => {
+      setPosition((prev: { x: number; y: number }) => {
+        const navWidth = scrollContainerRef.current?.offsetWidth || 400;
+        const navHeight = scrollContainerRef.current?.offsetHeight || 60;
+        const newX = Math.max(8, Math.min(window.innerWidth - navWidth - 8, prev.x));
+        const newY = Math.max(8, Math.min(window.innerHeight - navHeight - 8, prev.y));
+        return { x: newX, y: newY };
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleClick = (id: string) => {
     handleFeedback();
     setActiveItem(id);
@@ -201,25 +238,32 @@ const GlassNavigation = () => {
       <AnimatePresence>
         {isVisible && (
           <motion.nav 
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
+            drag
+            dragControls={dragControls}
+            dragMomentum={false}
+            dragElastic={0.1}
+            onDragStart={() => setIsDragging(true)}
+            onDragEnd={handleDragEnd}
+            initial={{ opacity: 0, x: position.x, y: position.y }}
+            animate={{ opacity: 1, x: position.x, y: position.y }}
+            exit={{ opacity: 0, scale: 0.9 }}
             transition={{
               duration: 0.3,
               type: "spring",
               stiffness: 200,
               damping: 25
             }} 
-            className="fixed bottom-8 left-8 z-50 max-w-[calc(100vw-4rem)]"
+            className="fixed top-0 left-0 z-50 cursor-grab active:cursor-grabbing"
+            style={{ touchAction: 'none' }}
           >
             {/* Enhanced glow effect behind nav */}
-            <div className="absolute inset-0 -z-10 blur-3xl opacity-70">
+            <div className="absolute inset-0 -z-10 blur-3xl opacity-70 pointer-events-none">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-500/40 via-primary/50 to-amber-500/40 rounded-full scale-125" />
             </div>
-            <div className="absolute inset-0 -z-10 blur-2xl opacity-50">
+            <div className="absolute inset-0 -z-10 blur-2xl opacity-50 pointer-events-none">
               <div className="absolute inset-0 bg-primary/30 rounded-full scale-115" />
             </div>
-            <div className="absolute inset-0 -z-10 blur-xl opacity-40">
+            <div className="absolute inset-0 -z-10 blur-xl opacity-40 pointer-events-none">
               <div className="absolute inset-0 bg-amber-600/20 rounded-full scale-105" />
             </div>
             
@@ -228,11 +272,25 @@ const GlassNavigation = () => {
               role="navigation"
               aria-label="Main navigation"
               onKeyDown={handleKeyDown}
-              className="glass-nav flex-row flex-nowrap p-1 md:p-1.5 rounded-full overflow-x-auto shadow-2xl shadow-primary/30 opacity-80 gap-[2px] md:gap-[4px] px-[4px] md:px-[8px] mx-0 flex items-center justify-start scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent"
+              className="glass-nav flex-row flex-nowrap p-1 md:p-1.5 rounded-full overflow-x-auto shadow-2xl shadow-primary/30 opacity-80 gap-[2px] md:gap-[4px] px-[4px] md:px-[8px] mx-0 flex items-center justify-start scrollbar-thin scrollbar-thumb-primary/50 scrollbar-track-transparent max-w-[calc(100vw-4rem)]"
               style={{
                 scrollbarWidth: 'thin',
               }}
             >
+              {/* Drag Handle */}
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div 
+                    className="flex items-center justify-center px-1.5 py-1.5 md:py-2.5 rounded-full text-foreground/40 hover:text-foreground/70 transition-colors cursor-grab active:cursor-grabbing shrink-0 border-r border-foreground/10 pr-2 mr-1"
+                    onPointerDown={(e) => dragControls.start(e)}
+                  >
+                    <GripVertical className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="bg-card border-border text-foreground">
+                  <p>Drag to reposition</p>
+                </TooltipContent>
+              </Tooltip>
               {navItems.map((item, index) => (
                 <Tooltip key={item.id}>
                   <TooltipTrigger asChild>
